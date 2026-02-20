@@ -1,2 +1,28 @@
-backend/dist/
-backend/node_modules/
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build outputs
+dist/
+**/dist/
+.angular/
+
+# Environment files
+.env
+**/.env
+!**/.env.example
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# Ionic
+www/
+
+# Capacitor
+ios/
+android/
