@@ -4,8 +4,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent, IonBackButton, IonButtons,
-  IonButton, IonIcon, IonItem, IonInput, IonTextarea, IonSelect,
-  IonSelectOption, IonToggle, IonSpinner, IonLabel
+  IonButton, IonIcon, IonInput, IonTextarea, IonSelect,
+  IonSelectOption, IonToggle, IonSpinner
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { saveOutline } from 'ionicons/icons';
@@ -17,8 +17,8 @@ import { ApiService } from '../../services/api.service';
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,
     IonHeader, IonToolbar, IonTitle, IonContent, IonBackButton, IonButtons,
-    IonButton, IonIcon, IonItem, IonInput, IonTextarea, IonSelect,
-    IonSelectOption, IonToggle, IonSpinner, IonLabel
+    IonButton, IonIcon, IonInput, IonTextarea, IonSelect,
+    IonSelectOption, IonToggle, IonSpinner
   ],
   template: `
     <ion-header>

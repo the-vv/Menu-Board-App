@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonChip, IonIcon } from '@ionic/angular/standalone';
+import { IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { locationOutline, timeOutline } from 'ionicons/icons';
 import { Restaurant } from '../../models';
@@ -8,7 +8,7 @@ import { Restaurant } from '../../models';
 @Component({
   selector: 'app-restaurant-card',
   standalone: true,
-  imports: [CommonModule, IonChip, IonIcon],
+  imports: [CommonModule, IonIcon],
   template: `
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 cursor-pointer hover:shadow-md transition-shadow active:bg-gray-50">
       <div class="flex items-start gap-3">

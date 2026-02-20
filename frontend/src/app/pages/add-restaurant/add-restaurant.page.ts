@@ -4,8 +4,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent, IonBackButton, IonButtons,
-  IonButton, IonIcon, IonItem, IonLabel, IonInput, IonTextarea, IonSelect,
-  IonSelectOption, IonToggle, IonSpinner, IonNote
+  IonButton, IonIcon, IonInput, IonTextarea, IonSelect,
+  IonSelectOption, IonToggle, IonSpinner
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { locationOutline, saveOutline, navigateOutline } from 'ionicons/icons';
@@ -18,8 +18,8 @@ import { LocationService } from '../../services/location.service';
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,
     IonHeader, IonToolbar, IonTitle, IonContent, IonBackButton, IonButtons,
-    IonButton, IonIcon, IonItem, IonLabel, IonInput, IonTextarea, IonSelect,
-    IonSelectOption, IonToggle, IonSpinner, IonNote
+    IonButton, IonIcon, IonInput, IonTextarea, IonSelect,
+    IonSelectOption, IonToggle, IonSpinner
   ],
   template: `
     <ion-header>

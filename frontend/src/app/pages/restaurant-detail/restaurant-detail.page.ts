@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent, IonBackButton, IonButtons,
   IonButton, IonIcon, IonSpinner, IonSearchbar, IonChip, IonFab, IonFabButton,
-  IonAlert, IonActionSheet, IonList, IonItem, IonLabel, IonBadge
+  IonActionSheet, AlertController, ToastController
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
@@ -29,7 +29,7 @@ interface GroupedMenuItems {
     CommonModule, FormsModule,
     IonHeader, IonToolbar, IonTitle, IonContent, IonBackButton, IonButtons,
     IonButton, IonIcon, IonSpinner, IonSearchbar, IonChip, IonFab, IonFabButton,
-    IonAlert, IonActionSheet, IonList, IonItem, IonLabel, IonBadge
+    IonActionSheet
   ],
   template: `
     <ion-header>
@@ -226,7 +226,9 @@ export class RestaurantDetailPage implements OnInit {
     private route: ActivatedRoute,
     public router: Router,
     private apiService: ApiService,
-    public authService: AuthService
+    public authService: AuthService,
+    private alertController: AlertController,
+    private toastController: ToastController
   ) {
     addIcons({ addOutline, pencilOutline, trashOutline, locationOutline, callOutline, globeOutline, chevronDownOutline, checkmarkCircleOutline, closeCircleOutline, ellipsisVerticalOutline });
   }
@@ -305,13 +307,33 @@ export class RestaurantDetailPage implements OnInit {
     });
   }
 
-  confirmDelete() {
-    if (confirm('Delete this restaurant and all its menu items?')) {
-      this.apiService.deleteRestaurant(this.restaurant()!._id).subscribe({
-        next: () => this.router.navigate(['/home']),
-        error: () => alert('Failed to delete restaurant')
-      });
-    }
+  async confirmDelete() {
+    const alert = await this.alertController.create({
+      header: 'Delete Restaurant',
+      message: 'Delete this restaurant and all its menu items? This cannot be undone.',
+      buttons: [
+        { text: 'Cancel', role: 'cancel' },
+        {
+          text: 'Delete',
+          role: 'destructive',
+          handler: () => {
+            this.apiService.deleteRestaurant(this.restaurant()!._id).subscribe({
+              next: () => this.router.navigate(['/home']),
+              error: async () => {
+                const toast = await this.toastController.create({
+                  message: 'Failed to delete restaurant',
+                  duration: 3000,
+                  color: 'danger',
+                  position: 'bottom'
+                });
+                await toast.present();
+              }
+            });
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   getTypeEmoji(): string {

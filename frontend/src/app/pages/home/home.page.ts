@@ -4,9 +4,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent, IonButtons,
-  IonButton, IonIcon, IonSearchbar, IonSegment, IonSegmentButton,
-  IonLabel, IonRefresher, IonRefresherContent, IonFab, IonFabButton,
-  IonSpinner, IonChip, IonBadge, IonText
+  IonButton, IonIcon, IonSearchbar,
+  IonRefresher, IonRefresherContent, IonFab, IonFabButton,
+  IonSpinner, IonChip
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
@@ -26,9 +26,9 @@ import { RestaurantCardComponent } from '../../components/restaurant-card/restau
   imports: [
     CommonModule, FormsModule,
     IonHeader, IonToolbar, IonTitle, IonContent, IonButtons,
-    IonButton, IonIcon, IonSearchbar, IonSegment, IonSegmentButton,
-    IonLabel, IonRefresher, IonRefresherContent, IonFab, IonFabButton,
-    IonSpinner, IonChip, IonBadge, IonText,
+    IonButton, IonIcon, IonSearchbar,
+    IonRefresher, IonRefresherContent, IonFab, IonFabButton,
+    IonSpinner, IonChip,
     RestaurantCardComponent
   ],
   template: `

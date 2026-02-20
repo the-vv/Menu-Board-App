@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent, IonBackButton, IonButtons,
-  IonSearchbar, IonSpinner, IonChip
+  IonSearchbar, IonSpinner
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { searchOutline } from 'ionicons/icons';
@@ -18,7 +18,7 @@ import { RestaurantCardComponent } from '../../components/restaurant-card/restau
   imports: [
     CommonModule, FormsModule,
     IonHeader, IonToolbar, IonTitle, IonContent, IonBackButton, IonButtons,
-    IonSearchbar, IonSpinner, IonChip,
+    IonSearchbar, IonSpinner,
     RestaurantCardComponent
   ],
   template: `
