@@ -53,7 +53,7 @@ import { RestaurantCardComponent } from '../../components/restaurant-card/restau
       } @else if (restaurants().length === 0) {
         <div class="text-center py-16 px-4">
           <p class="text-5xl mb-4">🏪</p>
-          <h3 class="text-lg font-semibold text-gray-700 mb-2">No restaurants yet</h3>
+          <h3 class="text-lg font-semibold text-gray-300 mb-2">No restaurants yet</h3>
           <p class="text-gray-500 text-sm mb-6">Add your first restaurant or cafe</p>
           <ion-button (click)="router.navigate(['/add-restaurant'])" fill="solid" color="primary">
             Add Restaurant

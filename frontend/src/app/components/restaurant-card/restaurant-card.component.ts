@@ -10,7 +10,7 @@ import { Restaurant } from '../../models';
   standalone: true,
   imports: [CommonModule, IonIcon],
   template: `
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 cursor-pointer hover:shadow-md transition-shadow active:bg-gray-50">
+    <div class="bg-gray-800 rounded-2xl shadow-sm border border-gray-700 p-4 cursor-pointer hover:bg-gray-750 transition-colors active:bg-gray-700">
       <div class="flex items-start gap-3">
         <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0"
              [class]="getTypeColor()">
@@ -18,24 +18,24 @@ import { Restaurant } from '../../models';
         </div>
         <div class="flex-1 min-w-0">
           <div class="flex items-start justify-between gap-2">
-            <h3 class="font-semibold text-gray-900 truncate">{{ restaurant.name }}</h3>
+            <h3 class="font-semibold text-white truncate">{{ restaurant.name }}</h3>
             @if (!restaurant.isPublic) {
-              <span class="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full shrink-0">Private</span>
+              <span class="text-xs bg-purple-900/60 text-purple-300 px-2 py-0.5 rounded-full shrink-0">Private</span>
             }
           </div>
           @if (restaurant.description) {
-            <p class="text-sm text-gray-500 mt-0.5 line-clamp-1">{{ restaurant.description }}</p>
+            <p class="text-sm text-gray-400 mt-0.5 line-clamp-1">{{ restaurant.description }}</p>
           }
           @if (restaurant.address) {
             <div class="flex items-center gap-1 mt-1">
-              <ion-icon name="location-outline" class="text-gray-400 text-xs"></ion-icon>
-              <span class="text-xs text-gray-400 truncate">{{ restaurant.address }}</span>
+              <ion-icon name="location-outline" class="text-gray-500 text-xs"></ion-icon>
+              <span class="text-xs text-gray-500 truncate">{{ restaurant.address }}</span>
             </div>
           }
           @if (restaurant.tags?.length) {
             <div class="flex gap-1 mt-2 flex-wrap">
               @for (tag of restaurant.tags?.slice(0, 3); track tag) {
-                <span class="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">{{ tag }}</span>
+                <span class="text-xs bg-gray-700 text-gray-300 px-2 py-0.5 rounded-full">{{ tag }}</span>
               }
             </div>
           }
@@ -60,8 +60,8 @@ export class RestaurantCardComponent {
 
   getTypeColor(): string {
     const map: Record<string, string> = {
-      restaurant: 'bg-orange-100', cafe: 'bg-amber-100', teashop: 'bg-green-100', other: 'bg-gray-100'
+      restaurant: 'bg-orange-900/50', cafe: 'bg-amber-900/50', teashop: 'bg-green-900/50', other: 'bg-gray-700'
     };
-    return map[this.restaurant.type] || 'bg-gray-100';
+    return map[this.restaurant.type] || 'bg-gray-700';
   }
 }

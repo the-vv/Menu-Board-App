@@ -34,7 +34,7 @@ import { ApiService } from '../../services/api.service';
       <form [formGroup]="form" (ngSubmit)="onSubmit()" class="px-4 py-4">
         <!-- Name -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Item Name *</label>
+          <label class="block text-sm font-medium text-gray-300 mb-1">Item Name *</label>
           <ion-input
             formControlName="name"
             placeholder="e.g. Masala Chai, Pasta"
@@ -42,13 +42,13 @@ import { ApiService } from '../../services/api.service';
             class="rounded-xl"
           ></ion-input>
           @if (form.get('name')?.invalid && form.get('name')?.touched) {
-            <p class="text-red-500 text-xs mt-1">Name is required</p>
+            <p class="text-red-400 text-xs mt-1">Name is required</p>
           }
         </div>
 
         <!-- Price -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Price *</label>
+          <label class="block text-sm font-medium text-gray-300 mb-1">Price *</label>
           <div class="flex gap-2">
             <ion-select formControlName="currency" fill="outline" style="max-width: 100px">
               <ion-select-option value="INR">₹ INR</ion-select-option>
@@ -67,13 +67,13 @@ import { ApiService } from '../../services/api.service';
             ></ion-input>
           </div>
           @if (form.get('price')?.invalid && form.get('price')?.touched) {
-            <p class="text-red-500 text-xs mt-1">Valid price is required</p>
+            <p class="text-red-400 text-xs mt-1">Valid price is required</p>
           }
         </div>
 
         <!-- Category -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+          <label class="block text-sm font-medium text-gray-300 mb-1">Category</label>
           <ion-input
             formControlName="category"
             placeholder="e.g. Beverages, Starters, Main Course"
@@ -84,7 +84,7 @@ import { ApiService } from '../../services/api.service';
 
         <!-- Description -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+          <label class="block text-sm font-medium text-gray-300 mb-1">Description</label>
           <ion-textarea
             formControlName="description"
             placeholder="Brief description of the item..."
@@ -95,10 +95,10 @@ import { ApiService } from '../../services/api.service';
         </div>
 
         <!-- Available Toggle -->
-        <div class="mb-6 flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+        <div class="mb-6 flex items-center justify-between p-4 bg-gray-800 rounded-xl border border-gray-700">
           <div>
-            <p class="font-medium text-gray-800">Available</p>
-            <p class="text-xs text-gray-500 mt-0.5">Is this item currently available?</p>
+            <p class="font-medium text-white">Available</p>
+            <p class="text-xs text-gray-400 mt-0.5">Is this item currently available?</p>
           </div>
           <ion-toggle formControlName="isAvailable" color="primary"></ion-toggle>
         </div>
@@ -120,8 +120,8 @@ import { ApiService } from '../../services/api.service';
         </ion-button>
 
         @if (error()) {
-          <div class="mt-3 p-3 bg-red-50 border border-red-200 rounded-xl">
-            <p class="text-red-600 text-sm">{{ error() }}</p>
+          <div class="mt-3 p-3 bg-red-900/40 border border-red-700/50 rounded-xl">
+            <p class="text-red-400 text-sm">{{ error() }}</p>
           </div>
         }
       </form>

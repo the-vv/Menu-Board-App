@@ -35,7 +35,7 @@ import { LocationService } from '../../services/location.service';
       <form [formGroup]="form" (ngSubmit)="onSubmit()" class="px-4 py-4">
         <!-- Name -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Name *</label>
+          <label class="block text-sm font-medium text-gray-300 mb-1">Name *</label>
           <ion-input
             formControlName="name"
             placeholder="Restaurant or cafe name"
@@ -43,13 +43,13 @@ import { LocationService } from '../../services/location.service';
             class="rounded-xl"
           ></ion-input>
           @if (form.get('name')?.invalid && form.get('name')?.touched) {
-            <p class="text-red-500 text-xs mt-1">Name is required</p>
+            <p class="text-red-400 text-xs mt-1">Name is required</p>
           }
         </div>
 
         <!-- Type -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Type *</label>
+          <label class="block text-sm font-medium text-gray-300 mb-1">Type *</label>
           <ion-select formControlName="type" fill="outline" placeholder="Select type">
             <ion-select-option value="restaurant">🍽️ Restaurant</ion-select-option>
             <ion-select-option value="cafe">☕ Cafe</ion-select-option>
@@ -60,7 +60,7 @@ import { LocationService } from '../../services/location.service';
 
         <!-- Description -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+          <label class="block text-sm font-medium text-gray-300 mb-1">Description</label>
           <ion-textarea
             formControlName="description"
             placeholder="Brief description..."
@@ -72,7 +72,7 @@ import { LocationService } from '../../services/location.service';
 
         <!-- Address -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+          <label class="block text-sm font-medium text-gray-300 mb-1">Address</label>
           <ion-input
             formControlName="address"
             placeholder="Full address"
@@ -83,7 +83,7 @@ import { LocationService } from '../../services/location.service';
 
         <!-- Location -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-2">Location (GPS)</label>
+          <label class="block text-sm font-medium text-gray-300 mb-2">Location (GPS)</label>
           <div class="flex gap-2 mb-2">
             <ion-input
               formControlName="lat"
@@ -112,7 +112,7 @@ import { LocationService } from '../../services/location.service';
 
         <!-- Phone -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+          <label class="block text-sm font-medium text-gray-300 mb-1">Phone</label>
           <ion-input
             formControlName="phone"
             placeholder="Phone number"
@@ -124,7 +124,7 @@ import { LocationService } from '../../services/location.service';
 
         <!-- Website -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Website</label>
+          <label class="block text-sm font-medium text-gray-300 mb-1">Website</label>
           <ion-input
             formControlName="website"
             placeholder="https://..."
@@ -136,7 +136,7 @@ import { LocationService } from '../../services/location.service';
 
         <!-- Tags -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Tags</label>
+          <label class="block text-sm font-medium text-gray-300 mb-1">Tags</label>
           <ion-input
             formControlName="tags"
             placeholder="wifi, parking, outdoor (comma separated)"
@@ -146,10 +146,10 @@ import { LocationService } from '../../services/location.service';
         </div>
 
         <!-- Public Toggle -->
-        <div class="mb-6 flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+        <div class="mb-6 flex items-center justify-between p-4 bg-gray-800 rounded-xl border border-gray-700">
           <div>
-            <p class="font-medium text-gray-800">Make Public</p>
-            <p class="text-xs text-gray-500 mt-0.5">Visible to all users</p>
+            <p class="font-medium text-white">Make Public</p>
+            <p class="text-xs text-gray-400 mt-0.5">Visible to all users</p>
           </div>
           <ion-toggle formControlName="isPublic" color="primary"></ion-toggle>
         </div>
@@ -171,8 +171,8 @@ import { LocationService } from '../../services/location.service';
         </ion-button>
 
         @if (error()) {
-          <div class="mt-3 p-3 bg-red-50 border border-red-200 rounded-xl">
-            <p class="text-red-600 text-sm">{{ error() }}</p>
+          <div class="mt-3 p-3 bg-red-900/40 border border-red-700/50 rounded-xl">
+            <p class="text-red-400 text-sm">{{ error() }}</p>
           </div>
         }
       </form>

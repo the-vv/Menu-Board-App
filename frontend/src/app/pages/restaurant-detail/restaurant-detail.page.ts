@@ -125,7 +125,7 @@ interface GroupedMenuItems {
         } @else if (filteredGroups().length === 0) {
           <div class="text-center py-12 px-4">
             <p class="text-4xl mb-3">🍽️</p>
-            <p class="text-gray-500 mb-4">No menu items yet</p>
+            <p class="text-gray-400 mb-4">No menu items yet</p>
             <ion-button (click)="addMenuItem()" fill="outline" color="primary" size="small">
               <ion-icon name="add-outline" slot="start"></ion-icon>
               Add Menu Item
@@ -135,18 +135,18 @@ interface GroupedMenuItems {
           <div class="px-4 py-2 pb-24">
             @for (group of filteredGroups(); track group.category) {
               @if (group.category) {
-                <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mt-4 mb-2">
+                <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mt-4 mb-2">
                   {{ group.category }}
                 </h3>
               }
               <div class="space-y-2">
                 @for (item of group.items; track item._id) {
-                  <div class="bg-white rounded-xl border border-gray-100 p-3 flex items-center gap-3">
+                  <div class="bg-gray-800 rounded-xl border border-gray-700 p-3 flex items-center gap-3">
                     <div class="flex-1 min-w-0">
                       <div class="flex items-center gap-2">
-                        <h4 class="font-medium text-gray-900">{{ item.name }}</h4>
+                        <h4 class="font-medium text-white">{{ item.name }}</h4>
                         @if (!item.isAvailable) {
-                          <span class="text-xs bg-red-100 text-red-600 px-1.5 py-0.5 rounded">N/A</span>
+                          <span class="text-xs bg-red-900/50 text-red-400 px-1.5 py-0.5 rounded">N/A</span>
                         }
                       </div>
                       @if (item.description) {
@@ -154,7 +154,7 @@ interface GroupedMenuItems {
                       }
                     </div>
                     <div class="text-right shrink-0">
-                      <span class="text-lg font-bold text-indigo-600">
+                      <span class="text-lg font-bold text-indigo-400">
                         {{ item.currency === 'INR' ? '₹' : item.currency }} {{ item.price | number:'1.0-2' }}
                       </span>
                     </div>
@@ -169,8 +169,8 @@ interface GroupedMenuItems {
             }
           </div>
           <!-- Disclaimer -->
-          <div class="mx-4 mb-6 p-3 bg-amber-50 border border-amber-200 rounded-xl">
-            <p class="text-xs text-amber-700">
+          <div class="mx-4 mb-6 p-3 bg-amber-900/30 border border-amber-700/50 rounded-xl">
+            <p class="text-xs text-amber-300">
               ⚠️ <strong>Disclaimer:</strong> Prices shown are user-reported and may differ from actual prices. Please verify with the restaurant.
             </p>
           </div>

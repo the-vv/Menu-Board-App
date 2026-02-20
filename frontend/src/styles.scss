@@ -1,18 +1,91 @@
 @use "tailwindcss";
 
-:root {
-  --primary: #6366f1;
-  --primary-dark: #4f46e5;
+/* ── Ionic dark palette ─────────────────────────────────────── */
+:root,
+.ion-palette-dark {
+  --primary: #818cf8;
+  --primary-dark: #6366f1;
+
+  /* Core Ionic dark variables */
+  --ion-background-color: #0f0f14;
+  --ion-background-color-rgb: 15, 15, 20;
+  --ion-text-color: #e2e8f0;
+  --ion-text-color-rgb: 226, 232, 240;
+
+  /* Color steps (surface shades) */
+  --ion-color-step-50:  #1a1a24;
+  --ion-color-step-100: #22222f;
+  --ion-color-step-150: #2a2a3a;
+  --ion-color-step-200: #313145;
+  --ion-color-step-250: #393950;
+  --ion-color-step-300: #41415b;
+  --ion-color-step-350: #494966;
+  --ion-color-step-400: #515171;
+  --ion-color-step-450: #59597c;
+  --ion-color-step-500: #616187;
+  --ion-color-step-550: #6e6e92;
+  --ion-color-step-600: #7b7b9e;
+  --ion-color-step-650: #8989a9;
+  --ion-color-step-700: #9696b4;
+  --ion-color-step-750: #a3a3bf;
+  --ion-color-step-800: #b0b0ca;
+  --ion-color-step-850: #bdbdd5;
+  --ion-color-step-900: #cacae0;
+  --ion-color-step-950: #d7d7eb;
+
+  /* Toolbar / card surfaces */
+  --ion-toolbar-background: #16161f;
+  --ion-item-background: #1c1c28;
+  --ion-card-background: #1c1c28;
+  --ion-tab-bar-background: #13131c;
+  --ion-tab-bar-border-color: #2a2a3a;
+
+  /* Primary color overrides for dark */
+  --ion-color-primary: #818cf8;
+  --ion-color-primary-rgb: 129, 140, 248;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-shade: #6366f1;
+  --ion-color-primary-tint: #a5b4fc;
+}
+
+body {
+  background: #0f0f14;
 }
 
 ion-content {
-  --background: #f8fafc;
+  --background: #0f0f14;
+}
+
+ion-header ion-toolbar {
+  --background: #16161f;
+  --border-color: #2a2a3a;
+}
+
+/* Searchbar dark */
+ion-searchbar {
+  --background: #1c1c28;
+  --color: #e2e8f0;
+  --placeholder-color: #64748b;
+  --icon-color: #64748b;
+  --border-radius: 14px;
+}
+
+/* Chip dark */
+ion-chip {
+  --background: #22222f;
+  --color: #e2e8f0;
+}
+
+/* Action sheet dark */
+ion-action-sheet {
+  --background: #1c1c28;
+  --button-color: #e2e8f0;
 }
 
 .card {
-  @apply bg-white rounded-2xl shadow-sm border border-gray-100;
+  @apply bg-gray-800 rounded-2xl shadow-sm border border-gray-700;
 }
 
 .btn-primary {
-  @apply bg-indigo-600 text-white font-semibold py-3 px-6 rounded-xl hover:bg-indigo-700 transition-colors;
+  @apply bg-indigo-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-indigo-600 transition-colors;
 }

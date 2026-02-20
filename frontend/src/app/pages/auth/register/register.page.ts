@@ -32,14 +32,14 @@ import { AuthService } from '../../../services/auth.service';
       <div class="max-w-sm mx-auto pt-8">
         <div class="text-center mb-8">
           <div class="text-6xl mb-3">🎉</div>
-          <h1 class="text-2xl font-bold text-gray-900">Join MenuBoard</h1>
-          <p class="text-gray-500 mt-1">Create an account to add your restaurants</p>
+          <h1 class="text-2xl font-bold text-white">Join MenuBoard</h1>
+          <p class="text-gray-400 mt-1">Create an account to add your restaurants</p>
         </div>
 
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
           <!-- Name -->
           <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+            <label class="block text-sm font-medium text-gray-300 mb-1">Name</label>
             <ion-input
               formControlName="name"
               placeholder="Your name"
@@ -50,7 +50,7 @@ import { AuthService } from '../../../services/auth.service';
 
           <!-- Email -->
           <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <label class="block text-sm font-medium text-gray-300 mb-1">Email</label>
             <ion-input
               formControlName="email"
               type="email"
@@ -62,7 +62,7 @@ import { AuthService } from '../../../services/auth.service';
 
           <!-- Password -->
           <div class="mb-6">
-            <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <label class="block text-sm font-medium text-gray-300 mb-1">Password</label>
             <ion-input
               formControlName="password"
               [type]="showPassword ? 'text' : 'password'"
@@ -77,8 +77,8 @@ import { AuthService } from '../../../services/auth.service';
           </div>
 
           @if (error()) {
-            <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl">
-              <p class="text-red-600 text-sm">{{ error() }}</p>
+            <div class="mb-4 p-3 bg-red-900/40 border border-red-700/50 rounded-xl">
+              <p class="text-red-400 text-sm">{{ error() }}</p>
             </div>
           }
 
@@ -98,9 +98,9 @@ import { AuthService } from '../../../services/auth.service';
           </ion-button>
         </form>
 
-        <p class="text-center text-sm text-gray-500">
+        <p class="text-center text-sm text-gray-400">
           Already have an account?
-          <a routerLink="/auth/login" class="text-indigo-600 font-medium">Sign in</a>
+          <a routerLink="/auth/login" class="text-indigo-400 font-medium">Sign in</a>
         </p>
       </div>
     </ion-content>

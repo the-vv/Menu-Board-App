@@ -104,7 +104,7 @@ import { RestaurantCardComponent } from '../../components/restaurant-card/restau
         @if (restaurants().length === 0) {
           <div class="text-center py-16 px-4">
             <p class="text-6xl mb-4">🍽️</p>
-            <h3 class="text-lg font-semibold text-gray-700 mb-2">No restaurants found</h3>
+            <h3 class="text-lg font-semibold text-gray-300 mb-2">No restaurants found</h3>
             <p class="text-gray-500 text-sm mb-6">Be the first to add one!</p>
             <ion-button (click)="router.navigate(['/add-restaurant'])" fill="solid" color="primary">
               Add Restaurant
@@ -123,8 +123,8 @@ import { RestaurantCardComponent } from '../../components/restaurant-card/restau
             </div>
           </div>
           <!-- Public Data Disclaimer -->
-          <div class="mx-4 my-4 p-3 bg-amber-50 border border-amber-200 rounded-xl">
-            <p class="text-xs text-amber-700">
+          <div class="mx-4 my-4 p-3 bg-amber-900/30 border border-amber-700/50 rounded-xl">
+            <p class="text-xs text-amber-300">
               ⚠️ <strong>Disclaimer:</strong> Menu prices and information are publicly submitted and may differ from actual prices. Always verify with the restaurant.
             </p>
           </div>

@@ -33,14 +33,14 @@ import { AuthService } from '../../../services/auth.service';
         <!-- Logo/Header -->
         <div class="text-center mb-8">
           <div class="text-6xl mb-3">🍽️</div>
-          <h1 class="text-2xl font-bold text-gray-900">Welcome Back</h1>
-          <p class="text-gray-500 mt-1">Sign in to manage your restaurants</p>
+          <h1 class="text-2xl font-bold text-white">Welcome Back</h1>
+          <p class="text-gray-400 mt-1">Sign in to manage your restaurants</p>
         </div>
 
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
           <!-- Email -->
           <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <label class="block text-sm font-medium text-gray-300 mb-1">Email</label>
             <ion-input
               formControlName="email"
               type="email"
@@ -49,13 +49,13 @@ import { AuthService } from '../../../services/auth.service';
               class="rounded-xl"
             ></ion-input>
             @if (form.get('email')?.invalid && form.get('email')?.touched) {
-              <p class="text-red-500 text-xs mt-1">Valid email required</p>
+              <p class="text-red-400 text-xs mt-1">Valid email required</p>
             }
           </div>
 
           <!-- Password -->
           <div class="mb-6">
-            <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <label class="block text-sm font-medium text-gray-300 mb-1">Password</label>
             <ion-input
               formControlName="password"
               [type]="showPassword ? 'text' : 'password'"
@@ -70,8 +70,8 @@ import { AuthService } from '../../../services/auth.service';
           </div>
 
           @if (error()) {
-            <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl">
-              <p class="text-red-600 text-sm">{{ error() }}</p>
+            <div class="mb-4 p-3 bg-red-900/40 border border-red-700/50 rounded-xl">
+              <p class="text-red-400 text-sm">{{ error() }}</p>
             </div>
           }
 
@@ -91,13 +91,13 @@ import { AuthService } from '../../../services/auth.service';
           </ion-button>
         </form>
 
-        <p class="text-center text-sm text-gray-500">
+        <p class="text-center text-sm text-gray-400">
           Don't have an account?
-          <a routerLink="/auth/register" class="text-indigo-600 font-medium">Sign up</a>
+          <a routerLink="/auth/register" class="text-indigo-400 font-medium">Sign up</a>
         </p>
 
-        <div class="mt-6 p-3 bg-blue-50 border border-blue-200 rounded-xl">
-          <p class="text-xs text-blue-700">
+        <div class="mt-6 p-3 bg-blue-900/30 border border-blue-700/50 rounded-xl">
+          <p class="text-xs text-blue-300">
             💡 You can browse restaurants and menus without signing in. Sign in only to manage your own restaurants.
           </p>
         </div>
