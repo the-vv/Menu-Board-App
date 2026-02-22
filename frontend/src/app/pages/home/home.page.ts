@@ -150,8 +150,8 @@ export class HomePage implements OnInit, ViewWillEnter {
   selectedType = '';
   userLocation = signal<{ lat: number; lng: number } | null>(null);
   showNearby = signal(false);
-  private _currentPage = 1;
-  private readonly _pageLimit = 20;
+  private currentPage = 1;
+  private readonly pageLimit = 20;
   private _searchTimer: ReturnType<typeof setTimeout> | undefined;
 
   typeFilters = [
@@ -185,7 +185,7 @@ export class HomePage implements OnInit, ViewWillEnter {
   }
 
   resetAndLoad() {
-    this._currentPage = 1;
+    this.currentPage = 1;
     this.hasMore.set(true);
     this.restaurants.set([]);
     this.loadRestaurants();
@@ -200,17 +200,17 @@ export class HomePage implements OnInit, ViewWillEnter {
         error: () => this.loading.set(false)
       });
     } else {
-      const params: any = { page: this._currentPage, limit: this._pageLimit };
+      const params: any = { page: this.currentPage, limit: this.pageLimit };
       if (this.searchQuery.trim()) params.search = this.searchQuery.trim();
       if (this.selectedType) params.type = this.selectedType;
       this.apiService.getRestaurants(params).subscribe({
         next: r => {
-          if (this._currentPage === 1) {
+          if (this.currentPage === 1) {
             this.restaurants.set(r);
           } else {
             this.restaurants.update(prev => [...prev, ...r]);
           }
-          this.hasMore.set(r.length === this._pageLimit);
+          this.hasMore.set(r.length === this.pageLimit);
           this.loading.set(false);
         },
         error: () => this.loading.set(false)
@@ -219,14 +219,14 @@ export class HomePage implements OnInit, ViewWillEnter {
   }
 
   loadMore(event: any) {
-    this._currentPage++;
-    const params: any = { page: this._currentPage, limit: this._pageLimit };
+    this.currentPage++;
+    const params: any = { page: this.currentPage, limit: this.pageLimit };
     if (this.searchQuery.trim()) params.search = this.searchQuery.trim();
     if (this.selectedType) params.type = this.selectedType;
     this.apiService.getRestaurants(params).subscribe({
       next: r => {
         this.restaurants.update(prev => [...prev, ...r]);
-        this.hasMore.set(r.length === this._pageLimit);
+        this.hasMore.set(r.length === this.pageLimit);
         event.target.complete();
       },
       error: () => event.target.complete()

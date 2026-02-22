@@ -207,7 +207,7 @@ export class RestaurantDetailPage implements OnInit, ViewWillEnter {
   menuLoading = signal(true);
   showActions = false;
   menuSearch = '';
-  private _restaurantId = '';
+  private restaurantId = '';
 
   actionButtons = [
     {
@@ -243,14 +243,14 @@ export class RestaurantDetailPage implements OnInit, ViewWillEnter {
   }
 
   ngOnInit() {
-    this._restaurantId = this.route.snapshot.paramMap.get('id')!;
-    this.loadRestaurant(this._restaurantId);
-    this.loadMenuItems(this._restaurantId);
+    this.restaurantId = this.route.snapshot.paramMap.get('id')!;
+    this.loadRestaurant(this.restaurantId);
+    this.loadMenuItems(this.restaurantId);
   }
 
   ionViewWillEnter() {
-    if (this._restaurantId) {
-      this.loadMenuItems(this._restaurantId);
+    if (this.restaurantId) {
+      this.loadMenuItems(this.restaurantId);
     }
   }
 

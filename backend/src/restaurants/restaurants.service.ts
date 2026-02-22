@@ -7,11 +7,18 @@ import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
 
 @Injectable()
 export class RestaurantsService {
+  private static readonly DEFAULT_PAGE_LIMIT = 20;
+  private static readonly MAX_PAGE_LIMIT = 50;
+
   constructor(@InjectModel(Restaurant.name) private restaurantModel: Model<RestaurantDocument>) {}
+
+  private escapeRegex(str: string): string {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
 
   async create(createDto: CreateRestaurantDto, userId?: string): Promise<any> {
     // Duplicate name + location validation
-    const namePattern = new RegExp(`^${createDto.name.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i');
+    const namePattern = new RegExp(`^${this.escapeRegex(createDto.name.trim())}$`, 'i');
     if (createDto.location) {
       const nearby = await this.restaurantModel.findOne({
         name: { $regex: namePattern },
@@ -58,7 +65,10 @@ export class RestaurantsService {
       filter.type = query.type;
     }
     const page = Math.max(1, parseInt(query.page) || 1);
-    const limit = Math.min(50, Math.max(1, parseInt(query.limit) || 20));
+    const limit = Math.min(
+      RestaurantsService.MAX_PAGE_LIMIT,
+      Math.max(1, parseInt(query.limit) || RestaurantsService.DEFAULT_PAGE_LIMIT),
+    );
     const skip = (page - 1) * limit;
     return this.restaurantModel.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit).lean();
   }
