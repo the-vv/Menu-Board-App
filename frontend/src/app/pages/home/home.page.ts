@@ -35,7 +35,7 @@ import { RestaurantCardComponent } from '../../components/restaurant-card/restau
     <ion-header>
       <ion-toolbar color="primary">
         <ion-title>
-          <span class="font-bold">🍽️ MenuBoard</span>
+          <span class="font-bold px-2">MenuBoard</span>
         </ion-title>
         <ion-buttons slot="end">
           @if (authService.isLoggedIn()) {
@@ -57,7 +57,7 @@ import { RestaurantCardComponent } from '../../components/restaurant-card/restau
       </ion-refresher>
 
       <!-- Hero Section -->
-      <div class="px-4 pt-6 pb-4 bg-gradient-to-b from-indigo-600 to-indigo-500 text-white">
+      <div class="px-4 pt-2 pb-4 bg-gradient-to-b from-indigo-600 to-indigo-500 text-white">
         <h2 class="text-2xl font-bold mb-1">Find Restaurants Near You</h2>
         <p class="text-indigo-100 text-sm mb-4">Browse menus and check prices before you go</p>
         <ion-searchbar
@@ -70,14 +70,14 @@ import { RestaurantCardComponent } from '../../components/restaurant-card/restau
       </div>
 
       <!-- Filter Chips -->
-      <div class="flex gap-2 px-4 py-3 overflow-x-auto">
+      <div class="flex gap-2 px-4 py-3 overflow-x-auto flex-wrap">
         @for (filter of typeFilters; track filter.value) {
           <ion-chip
             [color]="selectedType === filter.value ? 'primary' : 'medium'"
             (click)="selectType(filter.value)"
-            class="shrink-0"
+            class="shrink-0 grow-1"
           >
-            {{ filter.label }}
+            <span class="px-2 w-full text-center">{{ filter.label }}</span>
           </ion-chip>
         }
       </div>
@@ -150,11 +150,11 @@ export class HomePage implements OnInit {
   private _searchTimer: ReturnType<typeof setTimeout> | undefined;
 
   typeFilters = [
-    { label: '🌍 All', value: '' },
-    { label: '🍽️ Restaurants', value: 'restaurant' },
-    { label: '☕ Cafes', value: 'cafe' },
-    { label: '🍵 Tea Shops', value: 'teashop' },
-    { label: '🏪 Other', value: 'other' },
+    { label: 'All', value: '' },
+    { label: 'Restaurants', value: 'restaurant' },
+    { label: 'Cafes', value: 'cafe' },
+    { label: 'Tea Shops', value: 'teashop' },
+    { label: 'Other', value: 'other' },
   ];
 
   constructor(

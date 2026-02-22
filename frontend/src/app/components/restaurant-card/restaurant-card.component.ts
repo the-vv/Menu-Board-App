@@ -16,9 +16,9 @@ import { Restaurant } from '../../models';
              [class]="getTypeColor()">
           {{ getTypeEmoji() }}
         </div>
-        <div class="flex-1 min-w-0">
-          <div class="flex items-start justify-between gap-2">
-            <h3 class="font-semibold text-white truncate">{{ restaurant.name }}</h3>
+        <div class="flex-1 min-w-0 h-full">
+          <div class="flex items-center justify-between gap-2">
+            <h3 class="font-semibold text-white truncate m-0!">{{ restaurant.name }}</h3>
             @if (!restaurant.isPublic) {
               <span class="text-xs bg-purple-900/60 text-purple-300 px-2 py-0.5 rounded-full shrink-0">Private</span>
             }
