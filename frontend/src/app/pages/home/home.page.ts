@@ -69,6 +69,17 @@ import { RestaurantCardComponent } from '../../components/restaurant-card/restau
         ></ion-searchbar>
       </div>
 
+      <!-- Nearby Toggle -->
+      @if (userLocation()) {
+        <div class="px-4 pt-2">
+          <ion-chip color="success" (click)="toggleNearby()">
+            <span class="px-2 w-full text-center flex items-center justify-center gap-1">
+              <ion-icon name="navigate-outline" class="mr-1"></ion-icon>
+              {{ showNearby() ? 'Showing Nearby' : 'Show Nearby' }}
+            </span>
+          </ion-chip>
+        </div>
+      }
       <!-- Filter Chips -->
       <div class="flex gap-2 px-4 py-3 overflow-x-auto flex-wrap">
         @for (filter of typeFilters; track filter.value) {
@@ -81,16 +92,6 @@ import { RestaurantCardComponent } from '../../components/restaurant-card/restau
           </ion-chip>
         }
       </div>
-
-      <!-- Nearby Toggle -->
-      @if (userLocation()) {
-        <div class="px-4 pb-2">
-          <ion-chip color="success" (click)="toggleNearby()">
-            <ion-icon name="navigate-outline" class="mr-1"></ion-icon>
-            {{ showNearby() ? 'Showing Nearby' : 'Show Nearby' }}
-          </ion-chip>
-        </div>
-      }
 
       <!-- Loading -->
       @if (loading()) {
