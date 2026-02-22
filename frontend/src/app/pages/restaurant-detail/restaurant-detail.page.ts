@@ -5,13 +5,15 @@ import { FormsModule } from '@angular/forms';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent, IonBackButton, IonButtons,
   IonButton, IonIcon, IonSpinner, IonSearchbar, IonChip, IonFab, IonFabButton,
-  IonActionSheet, AlertController, ToastController
+  IonActionSheet, AlertController, ToastController, ViewWillEnter
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
   addOutline, pencilOutline, trashOutline, locationOutline,
-  callOutline, globeOutline, chevronDownOutline, checkmarkCircleOutline,
-  closeCircleOutline, ellipsisVerticalOutline
+  callOutline, globeOutline, checkmarkCircleOutline,
+  closeCircleOutline, ellipsisVerticalOutline, restaurantOutline,
+  cafeOutline, leafOutline, storefrontOutline, warningOutline,
+  lockClosedOutline
 } from 'ionicons/icons';
 import { ApiService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
@@ -38,7 +40,7 @@ interface GroupedMenuItems {
           <ion-back-button defaultHref="/home"></ion-back-button>
         </ion-buttons>
         <ion-title>{{ restaurant()?.name || 'Restaurant' }}</ion-title>
-        @if (isOwner()) {
+        @if (canEdit()) {
           <ion-buttons slot="end">
             <ion-button (click)="showActions = true">
               <ion-icon name="ellipsis-vertical-outline"></ion-icon>
@@ -55,36 +57,37 @@ interface GroupedMenuItems {
         </div>
       } @else if (restaurant()) {
         <!-- Restaurant Info Card -->
-        <div class="bg-gradient-to-br from-indigo-600 to-purple-600 text-white px-4 py-6">
+        <div class="bg-gradient-to-br from-teal-700 to-teal-600 text-white px-4 py-6">
           <div class="flex items-center gap-3 mb-3">
-            <div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center text-3xl">
-              {{ getTypeEmoji() }}
+            <div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center">
+              <ion-icon [name]="getTypeIcon()" class="text-3xl text-white"></ion-icon>
             </div>
             <div>
               <h1 class="text-xl font-bold">{{ restaurant()!.name }}</h1>
-              <span class="text-sm text-indigo-200 capitalize">{{ restaurant()!.type }}</span>
+              <span class="text-sm text-teal-200 capitalize">{{ restaurant()!.type }}</span>
             </div>
           </div>
           @if (restaurant()!.description) {
-            <p class="text-indigo-100 text-sm mb-3">{{ restaurant()!.description }}</p>
+            <p class="text-teal-100 text-sm mb-3">{{ restaurant()!.description }}</p>
           }
           <div class="flex flex-col gap-1.5">
             @if (restaurant()!.address) {
-              <div class="flex items-center gap-2 text-sm text-indigo-100">
+              <div class="flex items-center gap-2 text-sm text-teal-100">
                 <ion-icon name="location-outline"></ion-icon>
                 <span>{{ restaurant()!.address }}</span>
               </div>
             }
             @if (restaurant()!.phone) {
-              <div class="flex items-center gap-2 text-sm text-indigo-100">
+              <div class="flex items-center gap-2 text-sm text-teal-100">
                 <ion-icon name="call-outline"></ion-icon>
                 <a [href]="'tel:' + restaurant()!.phone" class="text-white">{{ restaurant()!.phone }}</a>
               </div>
             }
           </div>
           @if (!restaurant()!.isPublic) {
-            <div class="mt-3 inline-block bg-purple-400/30 text-white text-xs px-3 py-1 rounded-full">
-              🔒 Private
+            <div class="mt-3 inline-flex items-center gap-1 bg-white/20 text-white text-xs px-3 py-1 rounded-full">
+              <ion-icon name="lock-closed-outline"></ion-icon>
+              Private
             </div>
           }
         </div>
@@ -124,7 +127,7 @@ interface GroupedMenuItems {
           </div>
         } @else if (filteredGroups().length === 0) {
           <div class="text-center py-12 px-4">
-            <p class="text-4xl mb-3">🍽️</p>
+            <ion-icon name="restaurant-outline" class="text-5xl text-gray-600 mb-3 block"></ion-icon>
             <p class="text-gray-400 mb-4">No menu items yet</p>
             <ion-button (click)="addMenuItem()" fill="outline" color="primary" size="small">
               <ion-icon name="add-outline" slot="start"></ion-icon>
@@ -135,7 +138,7 @@ interface GroupedMenuItems {
           <div class="px-4 py-2 pb-24">
             @for (group of filteredGroups(); track group.category) {
               @if (group.category) {
-                <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mt-4 mb-2">
+                <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mt-4 mb-2 px-1">
                   {{ group.category }}
                 </h3>
               }
@@ -146,7 +149,7 @@ interface GroupedMenuItems {
                       <div class="flex items-center gap-2">
                         <h4 class="font-medium text-white">{{ item.name }}</h4>
                         @if (!item.isAvailable) {
-                          <span class="text-xs bg-red-900/50 text-red-400 px-1.5 py-0.5 rounded">N/A</span>
+                          <span class="text-xs bg-red-900/50 text-red-400 px-1.5 py-0.5 rounded">Unavailable</span>
                         }
                       </div>
                       @if (item.description) {
@@ -154,11 +157,11 @@ interface GroupedMenuItems {
                       }
                     </div>
                     <div class="text-right shrink-0">
-                      <span class="text-lg font-bold text-indigo-400">
+                      <span class="text-lg font-bold text-teal-400">
                         {{ item.currency === 'INR' ? '₹' : item.currency }} {{ item.price | number:'1.0-2' }}
                       </span>
                     </div>
-                    @if (isOwner()) {
+                    @if (canEdit()) {
                       <ion-button fill="clear" size="small" (click)="editMenuItem(item)">
                         <ion-icon name="pencil-outline" slot="icon-only"></ion-icon>
                       </ion-button>
@@ -169,9 +172,10 @@ interface GroupedMenuItems {
             }
           </div>
           <!-- Disclaimer -->
-          <div class="mx-4 mb-6 p-3 bg-amber-900/30 border border-amber-700/50 rounded-xl">
+          <div class="mx-4 mb-6 p-3 bg-amber-900/30 border border-amber-700/50 rounded-xl flex gap-2">
+            <ion-icon name="warning-outline" class="text-amber-400 shrink-0 mt-0.5"></ion-icon>
             <p class="text-xs text-amber-300">
-              ⚠️ <strong>Disclaimer:</strong> Prices shown are user-reported and may differ from actual prices. Please verify with the restaurant.
+              <strong>Disclaimer:</strong> Prices shown are user-reported and may differ from actual prices. Please verify with the restaurant.
             </p>
           </div>
         }
@@ -185,7 +189,7 @@ interface GroupedMenuItems {
       </ion-fab>
     </ion-content>
 
-    <!-- Action Sheet for owner -->
+    <!-- Action Sheet for logged-in users -->
     <ion-action-sheet
       [isOpen]="showActions"
       [buttons]="actionButtons"
@@ -193,7 +197,7 @@ interface GroupedMenuItems {
     ></ion-action-sheet>
   `
 })
-export class RestaurantDetailPage implements OnInit {
+export class RestaurantDetailPage implements OnInit, ViewWillEnter {
   restaurant = signal<Restaurant | null>(null);
   menuItems = signal<MenuItem[]>([]);
   filteredGroups = signal<GroupedMenuItems[]>([]);
@@ -203,6 +207,7 @@ export class RestaurantDetailPage implements OnInit {
   menuLoading = signal(true);
   showActions = false;
   menuSearch = '';
+  private restaurantId = '';
 
   actionButtons = [
     {
@@ -230,13 +235,23 @@ export class RestaurantDetailPage implements OnInit {
     private alertController: AlertController,
     private toastController: ToastController
   ) {
-    addIcons({ addOutline, pencilOutline, trashOutline, locationOutline, callOutline, globeOutline, chevronDownOutline, checkmarkCircleOutline, closeCircleOutline, ellipsisVerticalOutline });
+    addIcons({
+      addOutline, pencilOutline, trashOutline, locationOutline, callOutline, globeOutline,
+      checkmarkCircleOutline, closeCircleOutline, ellipsisVerticalOutline,
+      restaurantOutline, cafeOutline, leafOutline, storefrontOutline, warningOutline, lockClosedOutline
+    });
   }
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id')!;
-    this.loadRestaurant(id);
-    this.loadMenuItems(id);
+    this.restaurantId = this.route.snapshot.paramMap.get('id')!;
+    this.loadRestaurant(this.restaurantId);
+    this.loadMenuItems(this.restaurantId);
+  }
+
+  ionViewWillEnter() {
+    if (this.restaurantId) {
+      this.loadMenuItems(this.restaurantId);
+    }
   }
 
   loadRestaurant(id: string) {
@@ -291,14 +306,18 @@ export class RestaurantDetailPage implements OnInit {
     this.groupMenuItems();
   }
 
-  isOwner(): boolean {
-    const user = this.authService.currentUser();
-    const r = this.restaurant();
-    return !!(user && r && r.createdBy === user.id);
+  canEdit(): boolean {
+    return this.authService.isLoggedIn();
   }
 
   addMenuItem() {
-    this.router.navigate(['/add-menu-item', this.restaurant()?._id]);
+    const id = this.restaurant()?._id;
+    if (!id) return;
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/auth/login']);
+      return;
+    }
+    this.router.navigate(['/add-menu-item', id]);
   }
 
   editMenuItem(item: MenuItem) {
@@ -336,10 +355,13 @@ export class RestaurantDetailPage implements OnInit {
     await alert.present();
   }
 
-  getTypeEmoji(): string {
+  getTypeIcon(): string {
     const map: Record<string, string> = {
-      restaurant: '🍽️', cafe: '☕', teashop: '🍵', other: '🏪'
+      restaurant: 'restaurant-outline',
+      cafe: 'cafe-outline',
+      teashop: 'leaf-outline',
+      other: 'storefront-outline'
     };
-    return map[this.restaurant()?.type || ''] || '🍽️';
+    return map[this.restaurant()?.type || ''] || 'storefront-outline';
   }
 }

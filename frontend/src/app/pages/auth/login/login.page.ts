@@ -7,7 +7,7 @@ import {
   IonButton, IonIcon, IonInput, IonSpinner
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { logInOutline, eyeOutline, eyeOffOutline } from 'ionicons/icons';
+import { logInOutline, eyeOutline, eyeOffOutline, restaurantOutline } from 'ionicons/icons';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
@@ -32,9 +32,11 @@ import { AuthService } from '../../../services/auth.service';
       <div class="max-w-sm mx-auto pt-8">
         <!-- Logo/Header -->
         <div class="text-center mb-8">
-          <div class="text-6xl mb-3">🍽️</div>
+          <div class="w-16 h-16 bg-teal-900/50 rounded-2xl flex items-center justify-center mx-auto mb-3">
+            <ion-icon name="restaurant-outline" class="text-3xl text-teal-400"></ion-icon>
+          </div>
           <h1 class="text-2xl font-bold text-white">Welcome Back</h1>
-          <p class="text-gray-400 mt-1">Sign in to manage your restaurants</p>
+          <p class="text-gray-400 mt-1">Sign in to add or edit restaurants</p>
         </div>
 
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -96,9 +98,9 @@ import { AuthService } from '../../../services/auth.service';
           <a routerLink="/auth/register" class="text-indigo-400 font-medium">Sign up</a>
         </p>
 
-        <div class="mt-6 p-3 bg-blue-900/30 border border-blue-700/50 rounded-xl">
-          <p class="text-xs text-blue-300">
-            💡 You can browse restaurants and menus without signing in. Sign in only to manage your own restaurants.
+        <div class="mt-6 p-3 bg-teal-900/30 border border-teal-700/50 rounded-xl">
+          <p class="text-xs text-teal-300">
+            You can browse restaurants and menus without signing in. Sign in to add or edit restaurants and menu items.
           </p>
         </div>
       </div>
@@ -116,7 +118,7 @@ export class LoginPage {
     private authService: AuthService,
     private router: Router
   ) {
-    addIcons({ logInOutline, eyeOutline, eyeOffOutline });
+    addIcons({ logInOutline, eyeOutline, eyeOffOutline, restaurantOutline });
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]

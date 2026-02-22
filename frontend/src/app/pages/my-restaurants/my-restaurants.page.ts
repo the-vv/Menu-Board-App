@@ -6,7 +6,7 @@ import {
   IonButton, IonIcon, IonSpinner, IonFab, IonFabButton
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { addOutline, logOutOutline } from 'ionicons/icons';
+import { addOutline, logOutOutline, storefrontOutline } from 'ionicons/icons';
 import { ApiService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
 import { Restaurant } from '../../models';
@@ -38,12 +38,12 @@ import { RestaurantCardComponent } from '../../components/restaurant-card/restau
 
     <ion-content>
       <!-- User Info -->
-      <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-6">
+      <div class="bg-gradient-to-r from-teal-700 to-teal-600 text-white px-4 py-6">
         <div class="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center text-2xl font-bold mb-2">
           {{ userInitial() }}
         </div>
         <h2 class="text-xl font-bold">{{ authService.currentUser()?.name }}</h2>
-        <p class="text-indigo-200 text-sm">{{ authService.currentUser()?.email }}</p>
+        <p class="text-teal-200 text-sm">{{ authService.currentUser()?.email }}</p>
       </div>
 
       @if (loading()) {
@@ -52,9 +52,9 @@ import { RestaurantCardComponent } from '../../components/restaurant-card/restau
         </div>
       } @else if (restaurants().length === 0) {
         <div class="text-center py-16 px-4">
-          <p class="text-5xl mb-4">🏪</p>
+          <ion-icon name="storefront-outline" class="text-6xl text-gray-600 mb-4 block"></ion-icon>
           <h3 class="text-lg font-semibold text-gray-300 mb-2">No restaurants yet</h3>
-          <p class="text-gray-500 text-sm mb-6">Add your first restaurant or cafe</p>
+          <p class="text-gray-500 text-sm mb-6">Add a restaurant or cafe</p>
           <ion-button (click)="router.navigate(['/add-restaurant'])" fill="solid" color="primary">
             Add Restaurant
           </ion-button>
@@ -90,7 +90,7 @@ export class MyRestaurantsPage implements OnInit {
     private apiService: ApiService,
     public authService: AuthService
   ) {
-    addIcons({ addOutline, logOutOutline });
+    addIcons({ addOutline, logOutOutline, storefrontOutline });
   }
 
   ngOnInit() {
