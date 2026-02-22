@@ -24,10 +24,12 @@ export class ApiService {
   }
 
   // Restaurants
-  getRestaurants(params?: { search?: string; type?: string }): Observable<Restaurant[]> {
+  getRestaurants(params?: { search?: string; type?: string; page?: number; limit?: number }): Observable<Restaurant[]> {
     let httpParams = new HttpParams();
     if (params?.search) httpParams = httpParams.set('search', params.search);
     if (params?.type) httpParams = httpParams.set('type', params.type);
+    if (params?.page) httpParams = httpParams.set('page', String(params.page));
+    if (params?.limit) httpParams = httpParams.set('limit', String(params.limit));
     return this.http.get<Restaurant[]>(`${this.base}/restaurants`, { params: httpParams });
   }
 

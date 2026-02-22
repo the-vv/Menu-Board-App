@@ -3,8 +3,8 @@
 /* ── Ionic dark palette ─────────────────────────────────────── */
 :root,
 .ion-palette-dark {
-  --primary: #818cf8;
-  --primary-dark: #6366f1;
+  --primary: #2dd4bf;
+  --primary-dark: #14b8a6;
 
   /* Core Ionic dark variables */
   --ion-background-color: #0f0f14;
@@ -40,12 +40,12 @@
   --ion-tab-bar-background: #13131c;
   --ion-tab-bar-border-color: #2a2a3a;
 
-  /* Primary color overrides for dark */
-  --ion-color-primary: #818cf8;
-  --ion-color-primary-rgb: 129, 140, 248;
+  /* Primary color — teal */
+  --ion-color-primary: #14b8a6;
+  --ion-color-primary-rgb: 20, 184, 166;
   --ion-color-primary-contrast: #ffffff;
-  --ion-color-primary-shade: #6366f1;
-  --ion-color-primary-tint: #a5b4fc;
+  --ion-color-primary-shade: #0d9488;
+  --ion-color-primary-tint: #2dd4bf;
 }
 
 body {
@@ -87,5 +87,5 @@ ion-action-sheet {
 }
 
 .btn-primary {
-  @apply bg-indigo-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-indigo-600 transition-colors;
+  @apply bg-teal-500 text-white font-semibold py-3 px-6 rounded-xl hover:bg-teal-600 transition-colors;
 }

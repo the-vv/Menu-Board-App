@@ -5,11 +5,15 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } 
 import {
   IonHeader, IonToolbar, IonTitle, IonContent, IonBackButton, IonButtons,
   IonButton, IonIcon, IonInput, IonTextarea, IonSelect,
-  IonSelectOption, IonToggle, IonSpinner
+  IonSelectOption, IonToggle, IonSpinner, ToastController
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { locationOutline, saveOutline, navigateOutline } from 'ionicons/icons';
+import {
+  locationOutline, saveOutline, navigateOutline, chevronDownOutline,
+  chevronUpOutline, informationCircleOutline
+} from 'ionicons/icons';
 import { ApiService } from '../../services/api.service';
+import { AuthService } from '../../services/auth.service';
 import { LocationService } from '../../services/location.service';
 
 @Component({
@@ -32,10 +36,11 @@ import { LocationService } from '../../services/location.service';
     </ion-header>
 
     <ion-content>
-      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="px-4 py-4">
-        <!-- Name -->
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-300 mb-1">Name *</label>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="px-4 py-4 space-y-4">
+
+        <!-- Name (required) -->
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-1">Name <span class="text-red-400">*</span></label>
           <ion-input
             formControlName="name"
             placeholder="Restaurant or cafe name"
@@ -47,111 +52,170 @@ import { LocationService } from '../../services/location.service';
           }
         </div>
 
-        <!-- Type -->
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-300 mb-1">Type *</label>
-          <ion-select formControlName="type" fill="outline" placeholder="Select type">
-            <ion-select-option value="restaurant">🍽️ Restaurant</ion-select-option>
-            <ion-select-option value="cafe">☕ Cafe</ion-select-option>
-            <ion-select-option value="teashop">🍵 Tea Shop</ion-select-option>
-            <ion-select-option value="other">🏪 Other</ion-select-option>
+        <!-- Type (required) -->
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-1">Type <span class="text-red-400">*</span></label>
+          <ion-select
+            formControlName="type"
+            fill="outline"
+            placeholder="Select type"
+            interface="action-sheet"
+          >
+            <ion-select-option value="restaurant">Restaurant</ion-select-option>
+            <ion-select-option value="cafe">Cafe</ion-select-option>
+            <ion-select-option value="teashop">Tea Shop</ion-select-option>
+            <ion-select-option value="other">Other</ion-select-option>
           </ion-select>
         </div>
 
-        <!-- Description -->
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-300 mb-1">Description</label>
-          <ion-textarea
-            formControlName="description"
-            placeholder="Brief description..."
+        <!-- Location (required) -->
+        <div>
+          <label class="block text-sm font-medium text-gray-300 mb-1">
+            Location <span class="text-red-400">*</span>
+          </label>
+          <ion-button
+            expand="block"
             fill="outline"
-            [rows]="3"
-            class="rounded-xl"
-          ></ion-textarea>
-        </div>
-
-        <!-- Address -->
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-300 mb-1">Address</label>
-          <ion-input
-            formControlName="address"
-            placeholder="Full address"
-            fill="outline"
-            class="rounded-xl"
-          ></ion-input>
-        </div>
-
-        <!-- Location -->
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-300 mb-2">Location (GPS)</label>
-          <div class="flex gap-2 mb-2">
-            <ion-input
-              formControlName="lat"
-              placeholder="Latitude"
-              type="number"
-              fill="outline"
-              class="rounded-xl flex-1"
-            ></ion-input>
-            <ion-input
-              formControlName="lng"
-              placeholder="Longitude"
-              type="number"
-              fill="outline"
-              class="rounded-xl flex-1"
-            ></ion-input>
-          </div>
-          <ion-button fill="outline" size="small" (click)="useCurrentLocation()" [disabled]="gettingLocation()">
+            color="primary"
+            (click)="useCurrentLocation()"
+            [disabled]="gettingLocation()"
+            class="mb-2"
+          >
             @if (gettingLocation()) {
               <ion-spinner name="crescent" slot="start" class="w-4 h-4"></ion-spinner>
+              Getting location...
             } @else {
               <ion-icon name="navigate-outline" slot="start"></ion-icon>
+              {{ locationAcquired() ? 'Location Acquired' : 'Use My Location' }}
             }
-            Use My Location
           </ion-button>
+          @if (locationAcquired()) {
+            <div class="flex gap-2">
+              <ion-input
+                formControlName="lat"
+                placeholder="Latitude"
+                type="number"
+                fill="outline"
+                class="rounded-xl flex-1"
+              ></ion-input>
+              <ion-input
+                formControlName="lng"
+                placeholder="Longitude"
+                type="number"
+                fill="outline"
+                class="rounded-xl flex-1"
+              ></ion-input>
+            </div>
+          }
+          @if (!locationAcquired() && form.get('lat')?.touched && !form.get('lat')?.value) {
+            <p class="text-red-400 text-xs mt-1">Location is required. Use the button above or enter coordinates manually.</p>
+          }
+          @if (!locationAcquired()) {
+            <button type="button" class="text-xs text-teal-400 mt-1 underline" (click)="showManualCoords = !showManualCoords">
+              Enter coordinates manually
+            </button>
+            @if (showManualCoords) {
+              <div class="flex gap-2 mt-2">
+                <ion-input
+                  formControlName="lat"
+                  placeholder="Latitude"
+                  type="number"
+                  fill="outline"
+                  class="rounded-xl flex-1"
+                ></ion-input>
+                <ion-input
+                  formControlName="lng"
+                  placeholder="Longitude"
+                  type="number"
+                  fill="outline"
+                  class="rounded-xl flex-1"
+                ></ion-input>
+              </div>
+            }
+          }
         </div>
 
-        <!-- Phone -->
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-300 mb-1">Phone</label>
-          <ion-input
-            formControlName="phone"
-            placeholder="Phone number"
-            type="tel"
-            fill="outline"
-            class="rounded-xl"
-          ></ion-input>
-        </div>
+        <!-- Optional / Extra Details -->
+        <div class="rounded-xl border border-gray-700 overflow-hidden">
+          <button
+            type="button"
+            class="w-full flex items-center justify-between px-4 py-3 bg-gray-800 text-white"
+            (click)="showExtra = !showExtra"
+          >
+            <span class="text-sm font-medium">Additional Details</span>
+            <ion-icon [name]="showExtra ? 'chevron-up-outline' : 'chevron-down-outline'" class="text-gray-400"></ion-icon>
+          </button>
 
-        <!-- Website -->
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-300 mb-1">Website</label>
-          <ion-input
-            formControlName="website"
-            placeholder="https://..."
-            type="url"
-            fill="outline"
-            class="rounded-xl"
-          ></ion-input>
-        </div>
+          @if (showExtra) {
+            <div class="px-4 pb-4 pt-3 space-y-4 bg-gray-900/40">
+              <!-- Description -->
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-1">Description</label>
+                <ion-textarea
+                  formControlName="description"
+                  placeholder="Brief description..."
+                  fill="outline"
+                  [rows]="3"
+                  class="rounded-xl"
+                ></ion-textarea>
+              </div>
 
-        <!-- Tags -->
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-300 mb-1">Tags</label>
-          <ion-input
-            formControlName="tags"
-            placeholder="wifi, parking, outdoor (comma separated)"
-            fill="outline"
-            class="rounded-xl"
-          ></ion-input>
-        </div>
+              <!-- Address -->
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-1">Address</label>
+                <ion-input
+                  formControlName="address"
+                  placeholder="Full street address"
+                  fill="outline"
+                  class="rounded-xl"
+                ></ion-input>
+              </div>
 
-        <!-- Public Toggle -->
-        <div class="mb-6 flex items-center justify-between p-4 bg-gray-800 rounded-xl border border-gray-700">
-          <div>
-            <p class="font-medium text-white">Make Public</p>
-            <p class="text-xs text-gray-400 mt-0.5">Visible to all users</p>
-          </div>
-          <ion-toggle formControlName="isPublic" color="primary"></ion-toggle>
+              <!-- Phone -->
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-1">Phone</label>
+                <ion-input
+                  formControlName="phone"
+                  placeholder="Phone number"
+                  type="tel"
+                  fill="outline"
+                  class="rounded-xl"
+                ></ion-input>
+              </div>
+
+              <!-- Website -->
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-1">Website</label>
+                <ion-input
+                  formControlName="website"
+                  placeholder="https://..."
+                  type="url"
+                  fill="outline"
+                  class="rounded-xl"
+                ></ion-input>
+              </div>
+
+              <!-- Tags -->
+              <div>
+                <label class="block text-sm font-medium text-gray-300 mb-1">Tags</label>
+                <ion-input
+                  formControlName="tags"
+                  placeholder="wifi, parking, outdoor (comma separated)"
+                  fill="outline"
+                  class="rounded-xl"
+                ></ion-input>
+              </div>
+
+              <!-- Public Toggle -->
+              <div class="flex items-center justify-between p-4 bg-gray-800 rounded-xl border border-gray-700">
+                <div>
+                  <p class="font-medium text-white">Make Public</p>
+                  <p class="text-xs text-gray-400 mt-0.5">Visible to all users</p>
+                </div>
+                <ion-toggle formControlName="isPublic" color="primary"></ion-toggle>
+              </div>
+            </div>
+          }
         </div>
 
         <!-- Submit -->
@@ -160,7 +224,6 @@ import { LocationService } from '../../services/location.service';
           expand="block"
           color="primary"
           [disabled]="form.invalid || saving()"
-          class="rounded-xl"
         >
           @if (saving()) {
             <ion-spinner name="crescent" slot="start"></ion-spinner>
@@ -171,7 +234,7 @@ import { LocationService } from '../../services/location.service';
         </ion-button>
 
         @if (error()) {
-          <div class="mt-3 p-3 bg-red-900/40 border border-red-700/50 rounded-xl">
+          <div class="p-3 bg-red-900/40 border border-red-700/50 rounded-xl">
             <p class="text-red-400 text-sm">{{ error() }}</p>
           </div>
         }
@@ -183,25 +246,30 @@ export class AddRestaurantPage implements OnInit {
   form: FormGroup;
   saving = signal(false);
   gettingLocation = signal(false);
+  locationAcquired = signal(false);
   error = signal('');
   isEdit = false;
   restaurantId = '';
+  showExtra = false;
+  showManualCoords = false;
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     public router: Router,
     private apiService: ApiService,
-    private locationService: LocationService
+    private authService: AuthService,
+    private locationService: LocationService,
+    private toastController: ToastController
   ) {
-    addIcons({ locationOutline, saveOutline, navigateOutline });
+    addIcons({ locationOutline, saveOutline, navigateOutline, chevronDownOutline, chevronUpOutline, informationCircleOutline });
     this.form = this.fb.group({
       name: ['', Validators.required],
       type: ['restaurant', Validators.required],
+      lat: [null, Validators.required],
+      lng: [null, Validators.required],
       description: [''],
       address: [''],
-      lat: [null],
-      lng: [null],
       phone: [''],
       website: [''],
       tags: [''],
@@ -210,6 +278,10 @@ export class AddRestaurantPage implements OnInit {
   }
 
   ngOnInit() {
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/auth/login']);
+      return;
+    }
     this.restaurantId = this.route.snapshot.paramMap.get('id') || '';
     if (this.restaurantId) {
       this.isEdit = true;
@@ -220,18 +292,24 @@ export class AddRestaurantPage implements OnInit {
   loadRestaurant() {
     this.apiService.getRestaurant(this.restaurantId).subscribe({
       next: r => {
+        const lat = r.location?.coordinates?.[1] || null;
+        const lng = r.location?.coordinates?.[0] || null;
         this.form.patchValue({
           name: r.name,
           type: r.type,
           description: r.description || '',
           address: r.address || '',
-          lat: r.location?.coordinates?.[1] || null,
-          lng: r.location?.coordinates?.[0] || null,
+          lat,
+          lng,
           phone: r.phone || '',
           website: r.website || '',
           tags: r.tags?.join(', ') || '',
           isPublic: r.isPublic
         });
+        if (lat && lng) {
+          this.locationAcquired.set(true);
+          this.showExtra = !!(r.description || r.address || r.phone || r.website || r.tags?.length);
+        }
       }
     });
   }
@@ -241,18 +319,31 @@ export class AddRestaurantPage implements OnInit {
     const loc = await this.locationService.getCurrentPosition();
     if (loc) {
       this.form.patchValue({ lat: loc.lat, lng: loc.lng });
+      this.locationAcquired.set(true);
+    } else {
+      const toast = await this.toastController.create({
+        message: 'Could not get location. Please allow location access or enter manually.',
+        duration: 3000,
+        color: 'warning',
+        position: 'bottom'
+      });
+      await toast.present();
+      this.showManualCoords = true;
     }
     this.gettingLocation.set(false);
   }
 
   onSubmit() {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
     this.saving.set(true);
     this.error.set('');
 
     const val = this.form.value;
     const data: any = {
-      name: val.name,
+      name: val.name.trim(),
       type: val.type,
       description: val.description,
       address: val.address,
