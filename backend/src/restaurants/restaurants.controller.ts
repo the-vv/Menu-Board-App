@@ -10,7 +10,7 @@ export class RestaurantsController {
   constructor(private readonly restaurantsService: RestaurantsService) {}
 
   @Post()
-  @UseGuards(OptionalJwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   create(@Body() createDto: CreateRestaurantDto, @Request() req: any) {
     return this.restaurantsService.create(createDto, req.user?.userId);
   }

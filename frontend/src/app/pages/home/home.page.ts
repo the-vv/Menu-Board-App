@@ -70,20 +70,22 @@ import { RestaurantCardComponent } from '../../components/restaurant-card/restau
       </div>
 
       <!-- Filter Chips -->
-      <div class="flex gap-2 px-4 py-3 overflow-x-auto">
+      <div class="flex gap-2 px-4 py-3 overflow-x-auto flex-wrap">
         @for (filter of typeFilters; track filter.value) {
           <ion-chip
             [color]="selectedType === filter.value ? 'primary' : 'medium'"
             (click)="selectType(filter.value)"
-            class="shrink-0"
+            class="shrink-0 grow-1"
           >
-            <span class="px-1">{{ filter.label }}</span>
+            <span class="px-1 px-2 text-center w-full">{{ filter.label }}</span>
           </ion-chip>
         }
         @if (userLocation()) {
           <ion-chip [color]="showNearby() ? 'primary' : 'medium'" (click)="toggleNearby()" class="shrink-0">
-            <ion-icon name="navigate-outline" class="mr-1"></ion-icon>
-            <span class="px-1">{{ showNearby() ? 'Nearby' : 'Show Nearby' }}</span>
+            <span class="w-full px-2 flex items-center">
+              <ion-icon name="navigate-outline" class="mr-1"></ion-icon>
+              <span class="px-1">{{ showNearby() ? 'Nearby' : 'Show Nearby' }}</span>
+            </span>
           </ion-chip>
         }
       </div>

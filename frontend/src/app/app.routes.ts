@@ -1,4 +1,8 @@
-import { Routes } from '@angular/router';
+import { inject } from '@angular/core';
+import { Router, Routes } from '@angular/router';
+import { AuthService } from './services/auth.service';
+
+const authGuard = () => inject(AuthService).isLoggedIn() ? true : inject(Router).parseUrl('/auth/login');
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -16,23 +20,28 @@ export const routes: Routes = [
   },
   {
     path: 'add-restaurant',
-    loadComponent: () => import('./pages/add-restaurant/add-restaurant.page').then(m => m.AddRestaurantPage)
+    loadComponent: () => import('./pages/add-restaurant/add-restaurant.page').then(m => m.AddRestaurantPage),
+    canActivate: [authGuard]
   },
   {
     path: 'edit-restaurant/:id',
-    loadComponent: () => import('./pages/add-restaurant/add-restaurant.page').then(m => m.AddRestaurantPage)
+    loadComponent: () => import('./pages/add-restaurant/add-restaurant.page').then(m => m.AddRestaurantPage),
+    canActivate: [authGuard]
   },
   {
     path: 'add-menu-item/:restaurantId',
-    loadComponent: () => import('./pages/add-menu-item/add-menu-item.page').then(m => m.AddMenuItemPage)
+    loadComponent: () => import('./pages/add-menu-item/add-menu-item.page').then(m => m.AddMenuItemPage),
+    canActivate: [authGuard]
   },
   {
     path: 'edit-menu-item/:id',
-    loadComponent: () => import('./pages/add-menu-item/add-menu-item.page').then(m => m.AddMenuItemPage)
+    loadComponent: () => import('./pages/add-menu-item/add-menu-item.page').then(m => m.AddMenuItemPage),
+    canActivate: [authGuard]
   },
   {
     path: 'my-restaurants',
-    loadComponent: () => import('./pages/my-restaurants/my-restaurants.page').then(m => m.MyRestaurantsPage)
+    loadComponent: () => import('./pages/my-restaurants/my-restaurants.page').then(m => m.MyRestaurantsPage),
+    canActivate: [authGuard]
   },
   {
     path: 'auth/login',
