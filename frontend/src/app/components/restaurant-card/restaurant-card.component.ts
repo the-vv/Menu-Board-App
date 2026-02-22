@@ -11,14 +11,14 @@ import { Restaurant } from '../../models';
   imports: [CommonModule, IonIcon],
   template: `
     <div class="bg-gray-800 rounded-2xl shadow-sm border border-gray-700 p-4 cursor-pointer hover:bg-gray-750 transition-colors active:bg-gray-700">
-      <div class="flex items-start gap-3">
+      <div class="flex items-start gap-3 items-stretch">
         <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0"
-             [class]="getTypeColor()">
+            [class]="getTypeColor()">
           {{ getTypeEmoji() }}
         </div>
-        <div class="flex-1 min-w-0 h-full">
+        <div class="flex-1 min-w-0 h-full flex flex-col justify-center items-start">
           <div class="flex items-center justify-between gap-2">
-            <h3 class="font-semibold text-white truncate m-0!">{{ restaurant.name }}</h3>
+            <h3 class="font-semibold text-white truncate m-0! pt-3">{{ restaurant.name }}</h3>
             @if (!restaurant.isPublic) {
               <span class="text-xs bg-purple-900/60 text-purple-300 px-2 py-0.5 rounded-full shrink-0">Private</span>
             }

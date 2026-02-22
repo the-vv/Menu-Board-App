@@ -69,9 +69,20 @@ import { RestaurantCardComponent } from '../../components/restaurant-card/restau
         ></ion-searchbar>
       </div>
 
+      <!-- Filter Chips -->
+      <div class="flex gap-2 px-4 py-3 overflow-x-auto flex-wrap">
+        @for (filter of typeFilters; track filter.value) {
+          <ion-chip
+          [color]="selectedType === filter.value ? 'primary' : 'medium'"
+          (click)="selectType(filter.value)"
+          class="shrink-0 grow-1"
+          >
+          <span class="px-2 w-full text-center">{{ filter.label }}</span>
+        </ion-chip>
+      }
       <!-- Nearby Toggle -->
       @if (userLocation()) {
-        <div class="px-4 pt-2">
+        <div class="">
           <ion-chip color="success" (click)="toggleNearby()">
             <span class="px-2 w-full text-center flex items-center justify-center gap-1">
               <ion-icon name="navigate-outline" class="mr-1"></ion-icon>
@@ -80,17 +91,6 @@ import { RestaurantCardComponent } from '../../components/restaurant-card/restau
           </ion-chip>
         </div>
       }
-      <!-- Filter Chips -->
-      <div class="flex gap-2 px-4 py-3 overflow-x-auto flex-wrap">
-        @for (filter of typeFilters; track filter.value) {
-          <ion-chip
-            [color]="selectedType === filter.value ? 'primary' : 'medium'"
-            (click)="selectType(filter.value)"
-            class="shrink-0 grow-1"
-          >
-            <span class="px-2 w-full text-center">{{ filter.label }}</span>
-          </ion-chip>
-        }
       </div>
 
       <!-- Loading -->
@@ -114,7 +114,7 @@ import { RestaurantCardComponent } from '../../components/restaurant-card/restau
         } @else {
           <div class="px-4 py-2">
             <p class="text-xs text-gray-500 mb-3">{{ restaurants().length }} place(s) found</p>
-            <div class="space-y-3">
+            <div class="space-y-3 flex flex-col">
               @for (restaurant of restaurants(); track restaurant._id) {
                 <app-restaurant-card
                   [restaurant]="restaurant"
