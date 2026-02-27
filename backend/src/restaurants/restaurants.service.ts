@@ -73,7 +73,13 @@ export class RestaurantsService {
     return this.restaurantModel.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit).lean();
   }
 
-  async findNearby(lat: number, lng: number, maxDistance: number = 5000, userId?: string): Promise<any[]> {
+  async findNearby(
+    lat: number,
+    lng: number,
+    maxDistance: number = 5000,
+    userId?: string,
+    query: { search?: string; type?: string } = {},
+  ): Promise<any[]> {
     const filter: any = {
       location: {
         $near: {
@@ -87,6 +93,15 @@ export class RestaurantsService {
     } else {
       filter.$or = [{ isPublic: true }, { createdBy: new Types.ObjectId(userId) }];
     }
+
+    if (query.search?.trim()) {
+      filter.$text = { $search: query.search.trim() };
+    }
+
+    if (query.type?.trim()) {
+      filter.type = query.type.trim();
+    }
+
     return this.restaurantModel.find(filter).lean();
   }
 

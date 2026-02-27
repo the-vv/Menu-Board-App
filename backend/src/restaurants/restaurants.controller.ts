@@ -27,6 +27,8 @@ export class RestaurantsController {
     @Query('lat') lat: string,
     @Query('lng') lng: string,
     @Query('distance') distance: string,
+    @Query('search') search: string,
+    @Query('type') type: string,
     @Request() req: any,
   ) {
     const parsedLat = parseFloat(lat);
@@ -39,6 +41,7 @@ export class RestaurantsController {
       parsedLng,
       distance ? parseInt(distance) : 5000,
       req.user?.userId,
+      { search, type },
     );
   }
 

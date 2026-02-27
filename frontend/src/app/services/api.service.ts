@@ -33,8 +33,19 @@ export class ApiService {
     return this.http.get<Restaurant[]>(`${this.base}/restaurants`, { params: httpParams });
   }
 
-  getNearbyRestaurants(lat: number, lng: number, distance = 5000): Observable<Restaurant[]> {
-    const params = new HttpParams().set('lat', lat).set('lng', lng).set('distance', distance);
+  getNearbyRestaurants(
+    lat: number,
+    lng: number,
+    options?: { distance?: number; search?: string; type?: string },
+  ): Observable<Restaurant[]> {
+    let params = new HttpParams()
+      .set('lat', lat)
+      .set('lng', lng)
+      .set('distance', options?.distance ?? 5000);
+
+    if (options?.search?.trim()) params = params.set('search', options.search.trim());
+    if (options?.type) params = params.set('type', options.type);
+
     return this.http.get<Restaurant[]>(`${this.base}/restaurants/nearby`, { params });
   }
 

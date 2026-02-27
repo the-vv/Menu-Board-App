@@ -11,8 +11,8 @@ import {
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
-  addOutline, locationOutline, personOutline,
-  logInOutline, navigateOutline, warningOutline, storefrontOutline
+  addOutline, personOutline,
+  logInOutline, navigateOutline, warningOutline, storefrontOutline, sparklesOutline
 } from 'ionicons/icons';
 import { ApiService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
@@ -32,10 +32,10 @@ import { RestaurantCardComponent } from '../../components/restaurant-card/restau
     RestaurantCardComponent
   ],
   template: `
-    <ion-header>
-      <ion-toolbar color="primary">
+    <ion-header class="ion-no-border">
+      <ion-toolbar color="dark">
         <ion-title>
-          <span class="font-bold">MenuBoard</span>
+          <span class="font-bold tracking-tight">MenuBoard</span>
         </ion-title>
         <ion-buttons slot="end">
           @if (authService.isLoggedIn()) {
@@ -51,76 +51,76 @@ import { RestaurantCardComponent } from '../../components/restaurant-card/restau
       </ion-toolbar>
     </ion-header>
 
-    <ion-content>
+    <ion-content class="bg-slate-950">
       <ion-refresher slot="fixed" (ionRefresh)="onRefresh($event)">
         <ion-refresher-content></ion-refresher-content>
       </ion-refresher>
 
-      <!-- Hero Section -->
-      <div class="px-4 pt-2 pb-4 bg-gradient-to-b from-teal-700 to-teal-600 text-white">
-        <h2 class="text-2xl font-bold mb-1">Discover Restaurants</h2>
-        <p class="text-teal-100 text-sm mb-4">Browse menus and check prices before you go</p>
+      <div class="px-4 pt-4 pb-5 bg-gradient-to-b from-cyan-700 via-teal-700 to-slate-900 text-white shadow-lg rounded-b-3xl">
+        <div class="flex items-center gap-2 mb-2">
+          <ion-icon name="sparkles-outline" class="text-cyan-200"></ion-icon>
+          <p class="text-xs tracking-wide uppercase text-cyan-100/90">Discover your next meal</p>
+        </div>
+        <h2 class="text-2xl font-semibold mb-1">Explore restaurants nearby</h2>
+        <p class="text-cyan-100 text-sm mb-4">Search by name, cuisine, and type with instant filters.</p>
         <ion-searchbar
           [(ngModel)]="searchQuery"
           (ionInput)="onSearch()"
           placeholder="Search restaurants, cafes..."
-          class="rounded-xl"
+          class="rounded-2xl"
           color="light"
+          show-clear-button="focus"
         ></ion-searchbar>
       </div>
 
-      <!-- Filter Chips -->
-      <div class="flex gap-2 px-4 py-3 overflow-x-auto flex-wrap">
-        @for (filter of typeFilters; track filter.value) {
-          <ion-chip
-            [color]="selectedType === filter.value ? 'primary' : 'medium'"
-            (click)="selectType(filter.value)"
-            class="shrink-0 grow-1"
-          >
-            <span class="px-1 px-2 text-center w-full">{{ filter.label }}</span>
-          </ion-chip>
-        }
-        @if (userLocation()) {
-          <ion-chip [color]="showNearby() ? 'primary' : 'medium'" (click)="toggleNearby()" class="shrink-0">
-            <span class="w-full px-2 flex items-center">
-              <ion-icon name="navigate-outline" class="mr-1"></ion-icon>
-              <span class="px-1">{{ showNearby() ? 'Nearby' : 'Show Nearby' }}</span>
-            </span>
-          </ion-chip>
-        }
+      <div class="px-4 pt-3 pb-1">
+        <div class="flex gap-2 overflow-x-auto pb-2">
+          @for (filter of typeFilters; track filter.value) {
+            <ion-chip
+              [color]="selectedType === filter.value ? 'primary' : 'medium'"
+              (click)="selectType(filter.value)"
+              class="shrink-0"
+            >
+              <span class="px-2">{{ filter.label }}</span>
+            </ion-chip>
+          }
+          @if (userLocation()) {
+            <ion-chip [color]="showNearby() ? 'success' : 'medium'" (click)="toggleNearby()" class="shrink-0">
+              <span class="w-full px-2 flex items-center">
+                <ion-icon name="navigate-outline" class="mr-1"></ion-icon>
+                <span>{{ showNearby() ? 'Nearby only' : 'All places' }}</span>
+              </span>
+            </ion-chip>
+          }
+        </div>
+        <p class="text-xs text-slate-400 px-1">{{ getResultSummary() }}</p>
       </div>
 
-      <!-- Loading -->
       @if (loading()) {
-        <div class="flex justify-center py-12">
+        <div class="flex justify-center py-16">
           <ion-spinner name="crescent" color="primary"></ion-spinner>
         </div>
       }
 
-      <!-- Restaurant List -->
       @if (!loading()) {
         @if (restaurants().length === 0) {
           <div class="text-center py-16 px-4">
             <ion-icon name="storefront-outline" class="text-6xl text-gray-600 mb-4 block"></ion-icon>
             <h3 class="text-lg font-semibold text-gray-300 mb-2">No restaurants found</h3>
-            <p class="text-gray-500 text-sm mb-6">Be the first to add one!</p>
+            <p class="text-gray-500 text-sm mb-6">Try adjusting filters or add a new place.</p>
             <ion-button (click)="router.navigate(['/add-restaurant'])" fill="solid" color="primary">
               Add Restaurant
             </ion-button>
           </div>
         } @else {
-          <div class="px-4 py-2">
-            <p class="text-xs text-gray-500 mb-3">{{ restaurants().length }} place(s) found</p>
-            <div class="space-y-3 flex flex-col">
-              @for (restaurant of restaurants(); track restaurant._id) {
-                <app-restaurant-card
-                  [restaurant]="restaurant"
-                  (click)="router.navigate(['/restaurant', restaurant._id])"
-                ></app-restaurant-card>
-              }
-            </div>
+          <div class="px-4 py-3 space-y-3 flex flex-col">
+            @for (restaurant of restaurants(); track restaurant._id) {
+              <app-restaurant-card
+                [restaurant]="restaurant"
+                (click)="router.navigate(['/restaurant', restaurant._id])"
+              ></app-restaurant-card>
+            }
           </div>
-          <!-- Disclaimer -->
           <div class="mx-4 my-4 p-3 bg-amber-900/30 border border-amber-700/50 rounded-xl flex gap-2">
             <ion-icon name="warning-outline" class="text-amber-400 shrink-0 mt-0.5"></ion-icon>
             <p class="text-xs text-amber-300">
@@ -130,12 +130,10 @@ import { RestaurantCardComponent } from '../../components/restaurant-card/restau
         }
       }
 
-      <!-- Infinite Scroll -->
       <ion-infinite-scroll [disabled]="!hasMore() || showNearby()" (ionInfinite)="loadMore($event)">
-        <ion-infinite-scroll-content loadingText="Loading more..."></ion-infinite-scroll-content>
+        <ion-infinite-scroll-content loadingText="Loading more places..."></ion-infinite-scroll-content>
       </ion-infinite-scroll>
 
-      <!-- FAB -->
       <ion-fab slot="fixed" vertical="bottom" horizontal="end">
         <ion-fab-button color="primary" (click)="router.navigate(['/add-restaurant'])">
           <ion-icon name="add-outline"></ion-icon>
@@ -170,7 +168,7 @@ export class HomePage implements OnInit, ViewWillEnter {
     public authService: AuthService,
     private locationService: LocationService
   ) {
-    addIcons({ addOutline, locationOutline, personOutline, logInOutline, navigateOutline, warningOutline, storefrontOutline });
+    addIcons({ addOutline, personOutline, logInOutline, navigateOutline, warningOutline, storefrontOutline, sparklesOutline });
   }
 
   async ngOnInit() {
@@ -197,7 +195,10 @@ export class HomePage implements OnInit, ViewWillEnter {
     this.loading.set(true);
     if (this.showNearby() && this.userLocation()) {
       const loc = this.userLocation()!;
-      this.apiService.getNearbyRestaurants(loc.lat, loc.lng).subscribe({
+      this.apiService.getNearbyRestaurants(loc.lat, loc.lng, {
+        search: this.searchQuery,
+        type: this.selectedType,
+      }).subscribe({
         next: r => { this.restaurants.set(r); this.loading.set(false); this.hasMore.set(false); },
         error: () => this.loading.set(false)
       });
@@ -237,7 +238,7 @@ export class HomePage implements OnInit, ViewWillEnter {
 
   onSearch() {
     clearTimeout(this._searchTimer);
-    this._searchTimer = setTimeout(() => { this.showNearby.set(false); this.resetAndLoad(); }, 400);
+    this._searchTimer = setTimeout(() => this.resetAndLoad(), 400);
   }
 
   selectType(type: string) {
@@ -248,6 +249,12 @@ export class HomePage implements OnInit, ViewWillEnter {
   toggleNearby() {
     this.showNearby.update(v => !v);
     this.resetAndLoad();
+  }
+
+  getResultSummary() {
+    const count = this.restaurants().length;
+    const mode = this.showNearby() ? 'nearby places' : 'all places';
+    return `${count} result${count === 1 ? '' : 's'} in ${mode}`;
   }
 
   onRefresh(event: any) {
